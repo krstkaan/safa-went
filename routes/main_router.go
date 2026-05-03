@@ -27,6 +27,13 @@ func SetupRoutes(r *chi.Mux, db *gorm.DB) {
 	AuthRoutes(r, db)
 	RequesterRoutes(r, db)
 	ApproverRoutes(r, db)
+	PublisherRoutes(r, db)
+	AuthorRoutes(r, db)
+	ClassroomRoutes(r, db)
+	StudentRoutes(r, db)
+	BookRoutes(r, db)
+	PrintRequestRoutes(r, db)
+	LoanRoutes(r, db)
 	// [*RP*] Please do not delete this comment. It is used to automatically add new route files.
 }
 

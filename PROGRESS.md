@@ -39,48 +39,49 @@
 
 ### Faz 2 — Kalan Modeller
 
-#### PrintRequest ⬜
-- Model: `requested_at` date, `color_copies` int, `bw_copies` int, `description` text nullable, `requester_id` FK, `approver_id` FK, soft delete
-- Resource: filtreler → `requester_names[]`, `approver_names[]`, `color_copies_min/max`, `bw_copies_min/max`, `requested_at_from/to`, sort, pagination
+#### PrintRequest ✅
+- Model: `requested_at`, `color_copies`, `bw_copies`, `description` nullable, `requester_id` FK, `approver_id` FK, soft delete
+- Resource filtreler: `requester_names[]`, `approver_names[]`, `color_copies_min/max`, `bw_copies_min/max`, `requested_at_from/to`, sort, pagination
 - Ekstra endpoint'ler: export (Faz 5'te)
 
-#### Publisher ⬜
+#### Publisher ✅
 - Model: `name` unique, soft delete
 
-#### Author ⬜
+#### Author ✅
 - Model: `name` unique, soft delete
 
-#### Book ⬜
-- Model: `name`, `barcode` unique nullable, `author_id` FK, `publisher_id` FK, `language`, `page_count`, `is_donation` bool, `shelf_code`, `fixture_no` int unique, `level` enum(`ilkokul`/`ortaokul`/`ortak`), soft delete
+#### Book ✅
+- Model: `name`, `barcode` unique nullable, `author_id` FK, `publisher_id` FK, `language`, `page_count`, `is_donation` bool, `shelf_code`, `fixture_no` int unique, `level` enum, soft delete
 - Resource filtreler: `name`, `fixture_no`, `search`, `author_id`, `publisher_id`, `level`, `is_donation`, sort (default: `fixture_no`)
-- İş mantığı: `IsCurrentlyLoaned() bool`
+- `IsCurrentlyLoaned` hesaplanarak resource'a ekleniyor
 
-#### Classroom ⬜
+#### Classroom ✅
 - Model: `name`, soft delete
-- İş mantığı: `GetLevel() string` — isimden sınıf numarasını parse et → `ilkokul` (1-4), `ortaokul` (5-8), `ortak`
+- `GetLevel() string` — isimden sınıf numarasını parse et → `ilkokul` (1-4), `ortaokul` (5-8), `ortak`
 
-#### Student ⬜
+#### Student ✅
 - Model: `name`, `classroom_id` FK cascade, soft delete
 - Resource filtreler: `search`, `classroom_id`
-- İş mantığı: `GetLevel() string` (classroom'a delege)
+- `GetLevel() string` (classroom'a delege)
 
-#### Loan ⬜
-- Model: `student_id` FK, `book_id` FK, `loan_date`, `due_date`, `return_date` nullable, `status` enum(`active`/`returned`/`overdue`), `notes` nullable, soft delete
+#### Loan ✅
+- Model: `student_id` FK, `book_id` FK, `loan_date`, `due_date`, `return_date` nullable, `status` (active/returned/overdue), `notes` nullable, soft delete
 - Resource filtreler: `status`, `search`, `student_id`, `book_id`, sort
-- Ekstra endpoint'ler: `POST /loans/{id}/return`, `POST /loans/check-availability`
-- İş mantığı: `CanStudentBorrowBook(student, book) (bool, string)` — seviye eşleşme + aktif loan kontrolü
+- `POST /loans/{id}/return` — kitabı iade et
+- `POST /loans/check-availability` — seviye uyumu + aktif loan kontrolü
+- `CanStudentBorrowBook(student, book) (bool, string)` modelde implemente edildi
 
 ---
 
-### Faz 3 — İş Mantığı ⬜
-- `Loan.CanStudentBorrowBook` static metodu
-- `Book.IsCurrentlyLoaned`
-- `Classroom.GetLevel` / `Student.GetLevel`
-- `LoanController.ReturnBook`
-- `LoanController.CheckAvailability`
+### Faz 3 — İş Mantığı ✅
+- `models.CanStudentBorrowBook` — seviye eşleşme kontrolü
+- `Book.IsCurrentlyLoaned` — resource katmanında hesaplanıyor
+- `Classroom.GetLevel` / `Student.GetLevel` — model metodları
+- `LoanController.ReturnBook` ✅
+- `LoanController.CheckAvailability` ✅
 
-### Faz 4 — Gelişmiş Filtreleme ⬜
-- PrintRequest, Book, Student, Loan resource'larına filtre parametreleri
+### Faz 4 — Gelişmiş Filtreleme ✅
+- PrintRequest, Book, Student, Loan resource'larına filtre parametreleri eklendi
 
 ### Faz 5 — Excel Export ⬜
 - `go get github.com/xuri/excelize/v2`
@@ -116,3 +117,40 @@
 | POST | /approvers | Bearer |
 | PUT | /approvers/{id} | Bearer |
 | DELETE | /approvers/{id} | Bearer |
+| GET | /publishers | Bearer |
+| GET | /publishers/{id} | Bearer |
+| POST | /publishers | Bearer |
+| PUT | /publishers/{id} | Bearer |
+| DELETE | /publishers/{id} | Bearer |
+| GET | /authors | Bearer |
+| GET | /authors/{id} | Bearer |
+| POST | /authors | Bearer |
+| PUT | /authors/{id} | Bearer |
+| DELETE | /authors/{id} | Bearer |
+| GET | /classrooms | Bearer |
+| GET | /classrooms/{id} | Bearer |
+| POST | /classrooms | Bearer |
+| PUT | /classrooms/{id} | Bearer |
+| DELETE | /classrooms/{id} | Bearer |
+| GET | /students | Bearer |
+| GET | /students/{id} | Bearer |
+| POST | /students | Bearer |
+| PUT | /students/{id} | Bearer |
+| DELETE | /students/{id} | Bearer |
+| GET | /books | Bearer |
+| GET | /books/{id} | Bearer |
+| POST | /books | Bearer |
+| PUT | /books/{id} | Bearer |
+| DELETE | /books/{id} | Bearer |
+| GET | /print-requests | Bearer |
+| GET | /print-requests/{id} | Bearer |
+| POST | /print-requests | Bearer |
+| PUT | /print-requests/{id} | Bearer |
+| DELETE | /print-requests/{id} | Bearer |
+| GET | /loans | Bearer |
+| GET | /loans/{id} | Bearer |
+| POST | /loans | Bearer |
+| PUT | /loans/{id} | Bearer |
+| DELETE | /loans/{id} | Bearer |
+| POST | /loans/{id}/return | Bearer |
+| POST | /loans/check-availability | Bearer |

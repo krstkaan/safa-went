@@ -10,11 +10,147 @@ definitions:
       name:
         type: string
     type: object
+  requests.AuthorPayload:
+    properties:
+      name:
+        type: string
+    type: object
+  requests.AuthorUpdatePayload:
+    properties:
+      name:
+        type: string
+    type: object
+  requests.BookPayload:
+    properties:
+      author_id:
+        type: integer
+      barcode:
+        type: string
+      fixture_no:
+        type: integer
+      is_donation:
+        type: boolean
+      language:
+        type: string
+      level:
+        description: ilkokul, ortaokul, ortak
+        type: string
+      name:
+        type: string
+      page_count:
+        type: integer
+      publisher_id:
+        type: integer
+      shelf_code:
+        type: string
+    type: object
+  requests.BookUpdatePayload:
+    properties:
+      author_id:
+        type: integer
+      barcode:
+        type: string
+      fixture_no:
+        type: integer
+      is_donation:
+        type: boolean
+      language:
+        type: string
+      level:
+        type: string
+      name:
+        type: string
+      page_count:
+        type: integer
+      publisher_id:
+        type: integer
+      shelf_code:
+        type: string
+    type: object
+  requests.ClassroomPayload:
+    properties:
+      name:
+        type: string
+    type: object
+  requests.ClassroomUpdatePayload:
+    properties:
+      name:
+        type: string
+    type: object
+  requests.LoanCheckAvailabilityPayload:
+    properties:
+      book_id:
+        type: integer
+      student_id:
+        type: integer
+    type: object
+  requests.LoanPayload:
+    properties:
+      book_id:
+        type: integer
+      due_date:
+        type: string
+      loan_date:
+        type: string
+      notes:
+        type: string
+      student_id:
+        type: integer
+    type: object
+  requests.LoanUpdatePayload:
+    properties:
+      due_date:
+        type: string
+      notes:
+        type: string
+      status:
+        type: string
+    type: object
   requests.LoginPayload:
     properties:
       email:
         type: string
       password:
+        type: string
+    type: object
+  requests.PrintRequestPayload:
+    properties:
+      approver_id:
+        type: integer
+      bw_copies:
+        type: integer
+      color_copies:
+        type: integer
+      description:
+        type: string
+      requested_at:
+        type: string
+      requester_id:
+        type: integer
+    type: object
+  requests.PrintRequestUpdatePayload:
+    properties:
+      approver_id:
+        type: integer
+      bw_copies:
+        type: integer
+      color_copies:
+        type: integer
+      description:
+        type: string
+      requested_at:
+        type: string
+      requester_id:
+        type: integer
+    type: object
+  requests.PublisherPayload:
+    properties:
+      name:
+        type: string
+    type: object
+  requests.PublisherUpdatePayload:
+    properties:
+      name:
         type: string
     type: object
   requests.RegisterPayload:
@@ -33,6 +169,20 @@ definitions:
     type: object
   requests.RequesterUpdatePayload:
     properties:
+      name:
+        type: string
+    type: object
+  requests.StudentPayload:
+    properties:
+      classroom_id:
+        type: integer
+      name:
+        type: string
+    type: object
+  requests.StudentUpdatePayload:
+    properties:
+      classroom_id:
+        type: integer
       name:
         type: string
     type: object
@@ -92,6 +242,128 @@ definitions:
       name:
         type: string
     type: object
+  resources.AuthorCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/resources.AuthorResource'
+        type: array
+      meta:
+        $ref: '#/definitions/resources.PaginationMeta'
+    type: object
+  resources.AuthorResource:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  resources.BookCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/resources.BookResource'
+        type: array
+      meta:
+        $ref: '#/definitions/resources.PaginationMeta'
+    type: object
+  resources.BookResource:
+    properties:
+      author:
+        $ref: '#/definitions/resources.AuthorResource'
+      author_id:
+        type: integer
+      barcode:
+        type: string
+      created_at:
+        type: string
+      fixture_no:
+        type: integer
+      id:
+        type: integer
+      is_currently_loaned:
+        type: boolean
+      is_donation:
+        type: boolean
+      language:
+        type: string
+      level:
+        type: string
+      name:
+        type: string
+      page_count:
+        type: integer
+      publisher:
+        $ref: '#/definitions/resources.PublisherResource'
+      publisher_id:
+        type: integer
+      shelf_code:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  resources.ClassroomCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/resources.ClassroomResource'
+        type: array
+      meta:
+        $ref: '#/definitions/resources.PaginationMeta'
+    type: object
+  resources.ClassroomResource:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      level:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  resources.LoanCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/resources.LoanResource'
+        type: array
+      meta:
+        $ref: '#/definitions/resources.PaginationMeta'
+    type: object
+  resources.LoanResource:
+    properties:
+      book:
+        $ref: '#/definitions/resources.BookResource'
+      book_id:
+        type: integer
+      created_at:
+        type: string
+      due_date:
+        type: string
+      id:
+        type: integer
+      loan_date:
+        type: string
+      notes:
+        type: string
+      return_date:
+        type: string
+      status:
+        type: string
+      student:
+        $ref: '#/definitions/resources.StudentResource'
+      student_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
   resources.PaginationMeta:
     properties:
       current_page:
@@ -106,6 +378,60 @@ definitions:
         type: integer
       total:
         type: integer
+    type: object
+  resources.PrintRequestCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/resources.PrintRequestResource'
+        type: array
+      meta:
+        $ref: '#/definitions/resources.PaginationMeta'
+    type: object
+  resources.PrintRequestResource:
+    properties:
+      approver:
+        $ref: '#/definitions/resources.ApproverResource'
+      approver_id:
+        type: integer
+      bw_copies:
+        type: integer
+      color_copies:
+        type: integer
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      requested_at:
+        type: string
+      requester:
+        $ref: '#/definitions/resources.RequesterResource'
+      requester_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  resources.PublisherCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/resources.PublisherResource'
+        type: array
+      meta:
+        $ref: '#/definitions/resources.PaginationMeta'
+    type: object
+  resources.PublisherResource:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
     type: object
   resources.RequesterCollection:
     properties:
@@ -122,6 +448,32 @@ definitions:
         type: string
       id:
         type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  resources.StudentCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/resources.StudentResource'
+        type: array
+      meta:
+        $ref: '#/definitions/resources.PaginationMeta'
+    type: object
+  resources.StudentResource:
+    properties:
+      classroom:
+        $ref: '#/definitions/resources.ClassroomResource'
+      classroom_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      level:
+        type: string
       name:
         type: string
       updated_at:
@@ -405,6 +757,709 @@ paths:
       summary: Get current user
       tags:
       - Auth
+  /authors:
+    get:
+      description: Get a paginated list of Author records
+      parameters:
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Items per page (default 15)
+        in: query
+        name: per_page
+        type: integer
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.AuthorCollection'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: List all Author records
+      tags:
+      - Author
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Author payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AuthorPayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/resources.AuthorResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Create an Author
+      tags:
+      - Author
+  /authors/{id}:
+    delete:
+      parameters:
+      - description: Author ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Delete an Author
+      tags:
+      - Author
+    get:
+      parameters:
+      - description: Author ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.AuthorResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Get an Author by ID
+      tags:
+      - Author
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Author ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Author update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AuthorUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.AuthorResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Update an Author
+      tags:
+      - Author
+  /books:
+    get:
+      description: 'Get a paginated list of books with optional filters. Default sort:
+        fixture_no ASC.'
+      parameters:
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Items per page (default 15)
+        in: query
+        name: per_page
+        type: integer
+      - description: Filter by name (partial match)
+        in: query
+        name: name
+        type: string
+      - description: Filter by fixture number (exact)
+        in: query
+        name: fixture_no
+        type: integer
+      - description: Search by name or barcode
+        in: query
+        name: search
+        type: string
+      - description: Filter by author ID
+        in: query
+        name: author_id
+        type: integer
+      - description: Filter by publisher ID
+        in: query
+        name: publisher_id
+        type: integer
+      - description: Filter by level (ilkokul/ortaokul/ortak)
+        in: query
+        name: level
+        type: string
+      - description: Filter by donation flag
+        in: query
+        name: is_donation
+        type: boolean
+      - description: Sort column (e.g. fixture_no ASC)
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.BookCollection'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: List all Book records
+      tags:
+      - Book
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Book payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.BookPayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/resources.BookResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Create a Book
+      tags:
+      - Book
+  /books/{id}:
+    delete:
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Delete a Book
+      tags:
+      - Book
+    get:
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.BookResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Get a Book by ID
+      tags:
+      - Book
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Book update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.BookUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.BookResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Update a Book
+      tags:
+      - Book
+  /classrooms:
+    get:
+      description: Get a paginated list of Classroom records
+      parameters:
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Items per page (default 15)
+        in: query
+        name: per_page
+        type: integer
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.ClassroomCollection'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: List all Classroom records
+      tags:
+      - Classroom
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Classroom payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.ClassroomPayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/resources.ClassroomResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Create a Classroom
+      tags:
+      - Classroom
+  /classrooms/{id}:
+    delete:
+      parameters:
+      - description: Classroom ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Delete a Classroom
+      tags:
+      - Classroom
+    get:
+      parameters:
+      - description: Classroom ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.ClassroomResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Get a Classroom by ID
+      tags:
+      - Classroom
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Classroom ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Classroom update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.ClassroomUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.ClassroomResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Update a Classroom
+      tags:
+      - Classroom
+  /loans:
+    get:
+      description: Get a paginated list of loans with optional filters
+      parameters:
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Items per page (default 15)
+        in: query
+        name: per_page
+        type: integer
+      - description: Filter by status (active/returned/overdue)
+        in: query
+        name: status
+        type: string
+      - description: Search by student name
+        in: query
+        name: search
+        type: string
+      - description: Filter by student ID
+        in: query
+        name: student_id
+        type: integer
+      - description: Filter by book ID
+        in: query
+        name: book_id
+        type: integer
+      - description: Sort column
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.LoanCollection'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: List all Loan records
+      tags:
+      - Loan
+    post:
+      consumes:
+      - application/json
+      description: Creates a new loan after checking level compatibility and active-loan
+        constraints.
+      parameters:
+      - description: Loan payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.LoanPayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/resources.LoanResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Create a Loan
+      tags:
+      - Loan
+  /loans/{id}:
+    delete:
+      parameters:
+      - description: Loan ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Delete a Loan
+      tags:
+      - Loan
+    get:
+      parameters:
+      - description: Loan ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.LoanResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Get a Loan by ID
+      tags:
+      - Loan
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Loan ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Loan update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.LoanUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.LoanResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Update a Loan
+      tags:
+      - Loan
+  /loans/{id}/return:
+    post:
+      parameters:
+      - description: Loan ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.LoanResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Mark a loan as returned
+      tags:
+      - Loan
+  /loans/check-availability:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Check payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.LoanCheckAvailabilityPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Check if a student can borrow a book
+      tags:
+      - Loan
   /ping:
     get:
       description: Returns API health and database connectivity status
@@ -424,6 +1479,334 @@ paths:
       summary: Service health status
       tags:
       - Health
+  /print-requests:
+    get:
+      description: Get a paginated list of print requests with optional filters
+      parameters:
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Items per page (default 15)
+        in: query
+        name: per_page
+        type: integer
+      - description: Comma-separated requester names
+        in: query
+        name: requester_names
+        type: string
+      - description: Comma-separated approver names
+        in: query
+        name: approver_names
+        type: string
+      - description: Minimum color copies
+        in: query
+        name: color_copies_min
+        type: integer
+      - description: Maximum color copies
+        in: query
+        name: color_copies_max
+        type: integer
+      - description: Minimum BW copies
+        in: query
+        name: bw_copies_min
+        type: integer
+      - description: Maximum BW copies
+        in: query
+        name: bw_copies_max
+        type: integer
+      - description: Start date (RFC3339)
+        in: query
+        name: requested_at_from
+        type: string
+      - description: End date (RFC3339)
+        in: query
+        name: requested_at_to
+        type: string
+      - description: Sort column
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.PrintRequestCollection'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: List all PrintRequest records
+      tags:
+      - PrintRequest
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: PrintRequest payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.PrintRequestPayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/resources.PrintRequestResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Create a PrintRequest
+      tags:
+      - PrintRequest
+  /print-requests/{id}:
+    delete:
+      parameters:
+      - description: PrintRequest ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Delete a PrintRequest
+      tags:
+      - PrintRequest
+    get:
+      parameters:
+      - description: PrintRequest ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.PrintRequestResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Get a PrintRequest by ID
+      tags:
+      - PrintRequest
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: PrintRequest ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: PrintRequest update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.PrintRequestUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.PrintRequestResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Update a PrintRequest
+      tags:
+      - PrintRequest
+  /publishers:
+    get:
+      description: Get a paginated list of Publisher records
+      parameters:
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Items per page (default 15)
+        in: query
+        name: per_page
+        type: integer
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.PublisherCollection'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: List all Publisher records
+      tags:
+      - Publisher
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Publisher payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.PublisherPayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/resources.PublisherResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Create a Publisher
+      tags:
+      - Publisher
+  /publishers/{id}:
+    delete:
+      parameters:
+      - description: Publisher ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Delete a Publisher
+      tags:
+      - Publisher
+    get:
+      parameters:
+      - description: Publisher ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.PublisherResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Get a Publisher by ID
+      tags:
+      - Publisher
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Publisher ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Publisher update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.PublisherUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.PublisherResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Update a Publisher
+      tags:
+      - Publisher
   /requesters:
     get:
       description: Get a paginated list of Requester records
@@ -572,6 +1955,158 @@ paths:
       summary: Update a Requester
       tags:
       - Requester
+  /students:
+    get:
+      description: Get a paginated list of Student records with optional filters
+      parameters:
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Items per page (default 15)
+        in: query
+        name: per_page
+        type: integer
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      - description: Filter by classroom ID
+        in: query
+        name: classroom_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.StudentCollection'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: List all Student records
+      tags:
+      - Student
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Student payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.StudentPayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/resources.StudentResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Create a Student
+      tags:
+      - Student
+  /students/{id}:
+    delete:
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Delete a Student
+      tags:
+      - Student
+    get:
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.StudentResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Get a Student by ID
+      tags:
+      - Student
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Student update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.StudentUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.StudentResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Update a Student
+      tags:
+      - Student
   /user:
     get:
       description: Get a paginated list of User records. Use ?page=1&per_page=15 to
