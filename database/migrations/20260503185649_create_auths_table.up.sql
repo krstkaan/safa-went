@@ -1,5 +1,0 @@
--- TODO: write your up migration for auths
--- Example:
--- CREATE TABLE IF NOT EXISTS auths (
---   id BIGSERIAL PRIMARY KEY
--- );

@@ -1,5 +1,0 @@
--- TODO: write your up migration for auth_controllers
--- Example:
--- CREATE TABLE IF NOT EXISTS auth_controllers (
---   id BIGSERIAL PRIMARY KEY
--- );

@@ -1,3 +1,0 @@
--- TODO: write your down migration for auth_controllers
--- Example:
--- DROP TABLE IF EXISTS auth_controllers;
