@@ -1,8 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "title": "Safa API",
+        "contact": {},
+        "version": "1.0"
     },
+    "host": "localhost:8080",
+    "basePath": "/",
     "paths": {
         "/auth/login": {
             "post": {
@@ -24,7 +28,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.loginPayload"
+                            "$ref": "#/definitions/requests.LoginPayload"
                         }
                     }
                 ],
@@ -32,8 +36,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/resources.AuthResource"
                         }
                     },
                     "400": {
@@ -90,7 +93,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.registerPayload"
+                            "$ref": "#/definitions/requests.RegisterPayload"
                         }
                     }
                 ],
@@ -98,8 +101,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/resources.AuthResource"
                         }
                     },
                     "400": {
@@ -142,7 +144,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/resources.UserResource"
+                            "$ref": "#/definitions/resources.AuthUserResource"
                         }
                     },
                     "401": {
@@ -430,7 +432,7 @@
         }
     },
     "definitions": {
-        "controllers.loginPayload": {
+        "requests.LoginPayload": {
             "type": "object",
             "properties": {
                 "email": {
@@ -441,7 +443,7 @@
                 }
             }
         },
-        "controllers.registerPayload": {
+        "requests.RegisterPayload": {
             "type": "object",
             "properties": {
                 "email": {
@@ -478,6 +480,34 @@
                 "name": {
                     "type": "string",
                     "example": "John Doe"
+                }
+            }
+        },
+        "resources.AuthResource": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/resources.AuthUserResource"
+                }
+            }
+        },
+        "resources.AuthUserResource": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -549,6 +579,13 @@
                     "type": "boolean"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

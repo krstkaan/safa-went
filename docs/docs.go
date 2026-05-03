@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.loginPayload"
+                            "$ref": "#/definitions/requests.LoginPayload"
                         }
                     }
                 ],
@@ -43,8 +43,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/resources.AuthResource"
                         }
                     },
                     "400": {
@@ -101,7 +100,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.registerPayload"
+                            "$ref": "#/definitions/requests.RegisterPayload"
                         }
                     }
                 ],
@@ -109,8 +108,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/resources.AuthResource"
                         }
                     },
                     "400": {
@@ -153,7 +151,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/resources.UserResource"
+                            "$ref": "#/definitions/resources.AuthUserResource"
                         }
                     },
                     "401": {
@@ -441,7 +439,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "controllers.loginPayload": {
+        "requests.LoginPayload": {
             "type": "object",
             "properties": {
                 "email": {
@@ -452,7 +450,7 @@ const docTemplate = `{
                 }
             }
         },
-        "controllers.registerPayload": {
+        "requests.RegisterPayload": {
             "type": "object",
             "properties": {
                 "email": {
@@ -489,6 +487,34 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "John Doe"
+                }
+            }
+        },
+        "resources.AuthResource": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/resources.AuthUserResource"
+                }
+            }
+        },
+        "resources.AuthUserResource": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -561,16 +587,23 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "1.0",
+	Host:             "localhost:8080",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
+	Title:            "Safa API",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

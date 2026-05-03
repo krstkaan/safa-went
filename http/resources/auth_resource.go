@@ -1,21 +1,28 @@
 package resources
 
-import "gorm.io/gorm"
+import (
+	"time"
 
-// authResource is a skeleton resource generated without --all.
-type authResource struct {}
+	"safa-went/database/models"
+)
 
-// authCollection is a skeleton collection generated without --all.
-type authCollection struct {
-	Data []authResource `json:"data"`
-	Meta PaginationMeta     `json:"meta"`
+type AuthUserResource struct {
+	ID        uint      `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
-// authQuery is a skeleton query builder generated without --all.
-type authQuery struct {
-	db *gorm.DB
+type AuthResource struct {
+	Token string           `json:"token"`
+	User  AuthUserResource `json:"user"`
 }
 
-func NewauthQuery(db *gorm.DB) *authQuery {
-	return &authQuery{db: db}
+func NewAuthUserResource(u models.User) AuthUserResource {
+	return AuthUserResource{
+		ID:        u.ID,
+		Name:      u.Name,
+		Email:     u.Email,
+		CreatedAt: u.CreatedAt,
+	}
 }

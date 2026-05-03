@@ -12,6 +12,7 @@ import (
 
 	"safa-went/database/models"
 	"safa-went/http/middlewares"
+	"safa-went/http/requests"
 	"safa-went/http/resources"
 	"safa-went/internal/responses"
 )
@@ -20,31 +21,20 @@ type Auth struct {
     DB *gorm.DB
 }
 
-type registerPayload struct {
-    Name     string `json:"name"`
-    Email    string `json:"email"`
-    Password string `json:"password"`
-}
-
-type loginPayload struct {
-    Email    string `json:"email"`
-    Password string `json:"password"`
-}
-
 // Register godoc
 // @Summary Register a new user
 // @Description Create a new user account and return a JWT token
 // @Tags Auth
 // @Accept json
 // @Produce json
-// @Param payload body registerPayload true "Register payload"
-// @Success 201 {object} map[string]interface{}
+// @Param payload body requests.RegisterPayload true "Register payload"
+// @Success 201 {object} resources.AuthResource
 // @Failure 400 {object} responses.ErrorBody
 // @Failure 409 {object} responses.ErrorBody
 // @Failure 422 {object} responses.ErrorBody
 // @Router /auth/register [post]
 func (a *Auth) Register(w http.ResponseWriter, r *http.Request) {
-    var payload registerPayload
+    var payload requests.RegisterPayload
     if err := render.DecodeJSON(r.Body, &payload); err != nil {
         responses.JSONError(w, r, http.StatusBadRequest, "invalid request body")
         return
@@ -73,7 +63,7 @@ func (a *Auth) Register(w http.ResponseWriter, r *http.Request) {
     }
 
     render.Status(r, http.StatusCreated)
-    render.JSON(w, r, map[string]interface{}{"token": token, "user": user})
+    render.JSON(w, r, resources.AuthResource{Token: token, User: resources.NewAuthUserResource(user)})
 }
 
 // Login godoc
@@ -82,13 +72,13 @@ func (a *Auth) Register(w http.ResponseWriter, r *http.Request) {
 // @Tags Auth
 // @Accept json
 // @Produce json
-// @Param payload body loginPayload true "Login payload"
-// @Success 200 {object} map[string]interface{}
+// @Param payload body requests.LoginPayload true "Login payload"
+// @Success 200 {object} resources.AuthResource
 // @Failure 400 {object} responses.ErrorBody
 // @Failure 401 {object} responses.ErrorBody
 // @Router /auth/login [post]
 func (a *Auth) Login(w http.ResponseWriter, r *http.Request) {
-    var payload loginPayload
+    var payload requests.LoginPayload
     if err := render.DecodeJSON(r.Body, &payload); err != nil {
         responses.JSONError(w, r, http.StatusBadRequest, "invalid request body")
         return
@@ -111,7 +101,7 @@ func (a *Auth) Login(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    render.JSON(w, r, map[string]interface{}{"token": token, "user": user})
+    render.JSON(w, r, resources.AuthResource{Token: token, User: resources.NewAuthUserResource(user)})
 }
 
 // Me godoc
@@ -120,7 +110,7 @@ func (a *Auth) Login(w http.ResponseWriter, r *http.Request) {
 // @Tags Auth
 // @Produce json
 // @Security BearerAuth
-// @Success 200 {object} resources.UserResource
+// @Success 200 {object} resources.AuthUserResource
 // @Failure 401 {object} responses.ErrorBody
 // @Router /auth/user [get]
 func (a *Auth) Me(w http.ResponseWriter, r *http.Request) {
@@ -129,7 +119,7 @@ func (a *Auth) Me(w http.ResponseWriter, r *http.Request) {
 		responses.JSONError(w, r, http.StatusUnauthorized, "unauthorized")
 		return
 	}
-	render.JSON(w, r, resources.NewUserResource(*user))
+	render.JSON(w, r, resources.NewAuthUserResource(*user))
 }
 
 // Logout godoc

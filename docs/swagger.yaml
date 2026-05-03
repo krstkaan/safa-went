@@ -1,12 +1,13 @@
+basePath: /
 definitions:
-  controllers.loginPayload:
+  requests.LoginPayload:
     properties:
       email:
         type: string
       password:
         type: string
     type: object
-  controllers.registerPayload:
+  requests.RegisterPayload:
     properties:
       email:
         type: string
@@ -31,6 +32,24 @@ definitions:
         type: string
       name:
         example: John Doe
+        type: string
+    type: object
+  resources.AuthResource:
+    properties:
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/resources.AuthUserResource'
+    type: object
+  resources.AuthUserResource:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
         type: string
     type: object
   resources.PaginationMeta:
@@ -78,8 +97,11 @@ definitions:
       success:
         type: boolean
     type: object
+host: localhost:8080
 info:
   contact: {}
+  title: Safa API
+  version: "1.0"
 paths:
   /auth/login:
     post:
@@ -92,15 +114,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/controllers.loginPayload'
+          $ref: '#/definitions/requests.LoginPayload'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/resources.AuthResource'
         "400":
           description: Bad Request
           schema:
@@ -134,15 +155,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/controllers.registerPayload'
+          $ref: '#/definitions/requests.RegisterPayload'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/resources.AuthResource'
         "400":
           description: Bad Request
           schema:
@@ -167,7 +187,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/resources.UserResource'
+            $ref: '#/definitions/resources.AuthUserResource'
         "401":
           description: Unauthorized
           schema:
@@ -353,4 +373,9 @@ paths:
       summary: Update a User
       tags:
       - User
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

@@ -1,9 +1,12 @@
 package requests
 
-// authPayload is a skeleton request DTO generated without --all.
-// Fill fields required by create operations.
-type authPayload struct {}
+type RegisterPayload struct {
+    Name     string `json:"name"`
+    Email    string `json:"email"`
+    Password string `json:"password"`
+}
 
-// authUpdatePayload is a skeleton update request DTO generated without --all.
-// Fill optional fields for partial updates.
-type authUpdatePayload struct {}
+type LoginPayload struct {
+    Email    string `json:"email"`
+    Password string `json:"password"`
+}

@@ -1,3 +1,10 @@
+// @title           Safa API
+// @version         1.0
+// @host            localhost:8080
+// @BasePath        /
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 package main
 
 import (
@@ -6,13 +13,13 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"syscall"
-	"time"
 	_ "safa-went/docs"
-	"safa-went/internal/config"
 	"safa-went/http/middlewares"
+	"safa-went/internal/config"
 	"safa-went/internal/providers"
 	"safa-went/routes"
+	"syscall"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
