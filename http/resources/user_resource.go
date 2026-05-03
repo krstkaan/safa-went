@@ -1,8 +1,9 @@
 package resources
 
 import (
-	"time"
 	"safa-went/database/models"
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -33,24 +34,11 @@ func NewUserQuery(db *gorm.DB) *UserQuery {
 
 // Paginate runs a COUNT + paginated SELECT and returns a UserCollection.
 func (q *UserQuery) Paginate(page, perPage int64) (UserCollection, error) {
-	if page < 1 {
-		page = 1
-	}
-	if perPage < 1 {
-		perPage = 15
-	}
-
-	var total int64
-	if err := q.db.Model(&models.User{}).Count(&total).Error; err != nil {
+	data, meta, err := PaginateQuery(q.db, page, perPage, NewUserResource)
+	if err != nil {
 		return UserCollection{}, err
 	}
-
-	var items []models.User
-	if err := q.db.Offset(int((page-1)*perPage)).Limit(int(perPage)).Find(&items).Error; err != nil {
-		return UserCollection{}, err
-	}
-
-	return NewUserCollection(items, total, page, perPage), nil
+	return UserCollection{Data: data, Meta: meta}, nil
 }
 
 // Find fetches a single User by primary key and returns a UserResource.
@@ -70,17 +58,5 @@ func NewUserResource(m models.User) UserResource {
 		Email:     m.Email,
 		CreatedAt: m.CreatedAt,
 		UpdatedAt: m.UpdatedAt,
-	}
-}
-
-// NewUserCollection builds a paginated UserCollection.
-func NewUserCollection(items []models.User, total, page, perPage int64) UserCollection {
-	data := make([]UserResource, len(items))
-	for i, item := range items {
-		data[i] = NewUserResource(item)
-	}
-	return UserCollection{
-		Data: data,
-		Meta: BuildMeta(total, page, perPage, int64(len(items))),
 	}
 }

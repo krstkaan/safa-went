@@ -1,5 +1,7 @@
 package resources
 
+import "gorm.io/gorm"
+
 // PaginationMeta holds pagination metadata in the response envelope.
 type PaginationMeta struct {
 	CurrentPage int64 `json:"current_page"`
@@ -33,4 +35,41 @@ func BuildMeta(total, page, perPage, itemCount int64) PaginationMeta {
 		From:        from,
 		To:          to,
 	}
+}
+
+// PaginateQuery is a generic helper that handles clamp, COUNT, offset/limit,
+// and transform. Pass a pre-scoped db (e.g. with Where clauses already applied).
+func PaginateQuery[M any, R any](
+	db *gorm.DB,
+	page, perPage int64,
+	transform func(M) R,
+) ([]R, PaginationMeta, error) {
+	if page < 1 {
+		page = 1
+	}
+	if perPage < 1 {
+		perPage = 15
+	}
+	if perPage > 100 {
+		perPage = 100
+	}
+
+	var model M
+	var total int64
+	if err := db.Model(&model).Count(&total).Error; err != nil {
+		return nil, PaginationMeta{}, err
+	}
+
+	var items []M
+	offset := (page - 1) * perPage
+	if err := db.Offset(int(offset)).Limit(int(perPage)).Find(&items).Error; err != nil {
+		return nil, PaginationMeta{}, err
+	}
+
+	data := make([]R, len(items))
+	for i, item := range items {
+		data[i] = transform(item)
+	}
+
+	return data, BuildMeta(total, page, perPage, int64(len(items))), nil
 }

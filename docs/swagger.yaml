@@ -1,5 +1,15 @@
 basePath: /
 definitions:
+  requests.ApproverPayload:
+    properties:
+      name:
+        type: string
+    type: object
+  requests.ApproverUpdatePayload:
+    properties:
+      name:
+        type: string
+    type: object
   requests.LoginPayload:
     properties:
       email:
@@ -14,6 +24,16 @@ definitions:
       name:
         type: string
       password:
+        type: string
+    type: object
+  requests.RequesterPayload:
+    properties:
+      name:
+        type: string
+    type: object
+  requests.RequesterUpdatePayload:
+    properties:
+      name:
         type: string
     type: object
   requests.UserPayload:
@@ -32,6 +52,26 @@ definitions:
         type: string
       name:
         example: John Doe
+        type: string
+    type: object
+  resources.ApproverCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/resources.ApproverResource'
+        type: array
+      meta:
+        $ref: '#/definitions/resources.PaginationMeta'
+    type: object
+  resources.ApproverResource:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
         type: string
     type: object
   resources.AuthResource:
@@ -66,6 +106,26 @@ definitions:
         type: integer
       total:
         type: integer
+    type: object
+  resources.RequesterCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/resources.RequesterResource'
+        type: array
+      meta:
+        $ref: '#/definitions/resources.PaginationMeta'
+    type: object
+  resources.RequesterResource:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
     type: object
   resources.UserCollection:
     properties:
@@ -103,6 +163,154 @@ info:
   title: Safa API
   version: "1.0"
 paths:
+  /approvers:
+    get:
+      description: Get a paginated list of Approver records
+      parameters:
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Items per page (default 15)
+        in: query
+        name: per_page
+        type: integer
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.ApproverCollection'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: List all Approver records
+      tags:
+      - Approver
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Approver payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.ApproverPayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/resources.ApproverResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Create an Approver
+      tags:
+      - Approver
+  /approvers/{id}:
+    delete:
+      parameters:
+      - description: Approver ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Delete an Approver
+      tags:
+      - Approver
+    get:
+      parameters:
+      - description: Approver ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.ApproverResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Get an Approver by ID
+      tags:
+      - Approver
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Approver ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Approver update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.ApproverUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.ApproverResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Update an Approver
+      tags:
+      - Approver
   /auth/login:
     post:
       consumes:
@@ -216,6 +424,154 @@ paths:
       summary: Service health status
       tags:
       - Health
+  /requesters:
+    get:
+      description: Get a paginated list of Requester records
+      parameters:
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Items per page (default 15)
+        in: query
+        name: per_page
+        type: integer
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.RequesterCollection'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: List all Requester records
+      tags:
+      - Requester
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Requester payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.RequesterPayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/resources.RequesterResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Create a Requester
+      tags:
+      - Requester
+  /requesters/{id}:
+    delete:
+      parameters:
+      - description: Requester ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Delete a Requester
+      tags:
+      - Requester
+    get:
+      parameters:
+      - description: Requester ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.RequesterResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Get a Requester by ID
+      tags:
+      - Requester
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Requester ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Requester update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requests.RequesterUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.RequesterResource'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
+      summary: Update a Requester
+      tags:
+      - Requester
   /user:
     get:
       description: Get a paginated list of User records. Use ?page=1&per_page=15 to

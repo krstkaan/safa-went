@@ -25,6 +25,8 @@ func SetupRoutes(r *chi.Mux, db *gorm.DB) {
 	UserRoutes(r, db)
 	// Auth routes
 	AuthRoutes(r, db)
+	RequesterRoutes(r, db)
+	ApproverRoutes(r, db)
 	// [*RP*] Please do not delete this comment. It is used to automatically add new route files.
 }
 
