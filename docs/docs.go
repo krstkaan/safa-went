@@ -195,6 +195,11 @@ const docTemplate = `{
         },
         "/user": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a paginated list of User records. Use ?page=1\u0026per_page=15 to control pagination.",
                 "produces": [
                     "application/json"
@@ -233,6 +238,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new User record",
                 "consumes": [
                     "application/json"
@@ -279,6 +289,11 @@ const docTemplate = `{
         },
         "/user/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a single User record by ID",
                 "produces": [
                     "application/json"
@@ -324,6 +339,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing User record by ID",
                 "consumes": [
                     "application/json"
@@ -381,6 +401,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an existing User record by ID",
                 "tags": [
                     "User"

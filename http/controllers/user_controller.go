@@ -3,11 +3,11 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 	"safa-went/database/models"
 	"safa-went/http/requests"
 	"safa-went/http/resources"
 	"safa-went/internal/responses"
+	"strconv"
 
 	"github.com/go-chi/render"
 	"gorm.io/gorm"
@@ -26,6 +26,7 @@ func (c *User) findByID(id uint, item *models.User) error {
 // @Description Get a paginated list of User records. Use ?page=1&per_page=15 to control pagination.
 // @Tags User
 // @Produce json
+// @Security BearerAuth
 // @Param page     query int false "Page number (default 1)"
 // @Param per_page query int false "Items per page (default 15)"
 // @Success 200 {object} resources.UserCollection
@@ -49,6 +50,7 @@ func (c *User) GetAllUser(w http.ResponseWriter, r *http.Request) {
 // @Description Get a single User record by ID
 // @Tags User
 // @Produce json
+// @Security BearerAuth
 // @Param id path int true "User ID"
 // @Success 200 {object} resources.UserResource
 // @Failure 400 {object} responses.ErrorBody
@@ -81,6 +83,7 @@ func (c *User) GetUserByID(w http.ResponseWriter, r *http.Request) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param payload body requests.UserPayload true "User payload"
 // @Success 201 {object} resources.UserResource
 // @Failure 400 {object} responses.ErrorBody
@@ -115,6 +118,7 @@ func (c *User) CreateUser(w http.ResponseWriter, r *http.Request) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param id path int true "User ID"
 // @Param payload body requests.UserUpdatePayload true "User update payload"
 // @Success 200 {object} resources.UserResource
@@ -178,6 +182,7 @@ func (c *User) UpdateUser(w http.ResponseWriter, r *http.Request) {
 // @Summary Delete a User
 // @Description Delete an existing User record by ID
 // @Tags User
+// @Security BearerAuth
 // @Param id path int true "User ID"
 // @Success 204
 // @Failure 400 {object} responses.ErrorBody

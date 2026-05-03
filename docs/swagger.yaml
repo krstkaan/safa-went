@@ -220,6 +220,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
       summary: List all User records
       tags:
       - User
@@ -249,6 +251,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
       summary: Create a User
       tags:
       - User
@@ -272,6 +276,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
       summary: Delete a User
       tags:
       - User
@@ -302,6 +308,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
       summary: Get a User by ID
       tags:
       - User
@@ -340,6 +348,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/responses.ErrorBody'
+      security:
+      - BearerAuth: []
       summary: Update a User
       tags:
       - User
