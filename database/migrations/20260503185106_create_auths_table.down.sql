@@ -1,0 +1,3 @@
+-- TODO: write your down migration for auths
+-- Example:
+-- DROP TABLE IF EXISTS auths;
